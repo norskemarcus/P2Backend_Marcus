@@ -33,4 +33,33 @@ public class SleepingBagExternal {
     String season;
     String stockLocation;
 
+    public SleepingBagExternal(
+            String brand,
+            String model,
+            String sku,
+            String cost,
+            String personHeight,
+            String comfortTemp,
+            String lowerLimitTemp,
+            String recommendedTemp,
+            String innerMaterial,
+            String productWeight,
+            String colour,
+            String season,
+            String stockLocation
+    ) {
+        this.brand = brand;
+        this.model = model;
+        this.sku = sku;
+        this.cost = cost;
+        this.personHeight = personHeight;
+        this.comfortTemp = comfortTemp;
+        this.lowerLimitTemp = lowerLimitTemp;
+        this.recommendedTemp = recommendedTemp;
+        this.innerMaterial = innerMaterial;
+        this.productWeight = productWeight;
+        this.colour = colour;
+        this.season = season;
+        this.stockLocation = stockLocation;
+    }
 }
