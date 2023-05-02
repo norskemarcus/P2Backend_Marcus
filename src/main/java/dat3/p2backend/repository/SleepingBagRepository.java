@@ -1,9 +1,9 @@
 package dat3.p2backend.repository;
 
-import dat3.p2backend.entity.SleepingBag;
+import dat3.p2backend.entity.SleepingBagExternal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SleepingBagRepository extends JpaRepository<SleepingBag, Integer> {
+public interface SleepingBagRepository extends JpaRepository<SleepingBagExternal, Integer> {
 }

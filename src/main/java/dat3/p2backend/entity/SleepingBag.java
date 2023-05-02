@@ -16,7 +16,7 @@ import lombok.Setter;
 
 @Entity
 public class SleepingBag {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Integer id;
 }
