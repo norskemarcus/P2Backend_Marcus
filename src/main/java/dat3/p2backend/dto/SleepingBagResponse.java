@@ -15,7 +15,7 @@ public class SleepingBagResponse {
 
 
   public SleepingBagResponse(SleepingBag sleepingBag) {
-    this.id = sleepingBag.getId();
+    //this.id = sleepingBag.getId();
    /*
     this.brand = sleepingBag.getBrand();
     this.model = sleepingBag.getModel();

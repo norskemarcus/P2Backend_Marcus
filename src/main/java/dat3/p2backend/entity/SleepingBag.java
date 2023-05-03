@@ -28,7 +28,7 @@ public class SleepingBag {
   Double comfortTemp;
   Double lowerLimitTemp;
   String innerMaterial;
-  Integer downFillPower; //650, 700, 800 or 850+
+  String downFillPower; //650, 700, 800 or 850+
 
   Integer productWeight;
   String stockLocation;
@@ -42,11 +42,23 @@ public class SleepingBag {
     this.personHeight = parseInt(sleepingBagExternal.getPersonHeight());
     this.comfortTemp = parseDouble(sleepingBagExternal.getComfortTemp());
     this.lowerLimitTemp = parseDouble(sleepingBagExternal.getLowerLimitTemp());
-    this.innerMaterial = sleepingBagExternal.getInnerMaterial();
-    //this.downFillPower = parseInt(sleepingBagExternal.getDownFillPower)
+
+    this.innerMaterial = sleepingBagExternal.getInnerMaterial().substring(
+            0,
+            sleepingBagExternal.getInnerMaterial().indexOf("(")-1).trim();
+
+    this.downFillPower = sleepingBagExternal.getInnerMaterial().substring(
+            sleepingBagExternal.getInnerMaterial().indexOf("(")+1,
+            sleepingBagExternal.getInnerMaterial().indexOf(")"));
+
     this.productWeight = parseInt(sleepingBagExternal.getProductWeight());
     this.stockLocation = sleepingBagExternal.getStockLocation();
-   // this.isFemale = todo
+    if (sleepingBagExternal.getModel().contains("(W)")) {
+      this.isFemale = true;
+    }
+    else {
+      this.isFemale = false;
+    }
 
   }
 

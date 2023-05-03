@@ -1,7 +1,9 @@
 package dat3.p2backend.config;
 
+import dat3.p2backend.entity.SleepingBag;
 import dat3.p2backend.entity.SleepingBagExternal;
 import dat3.p2backend.repository.SleepingBagExternalRepository;
+import dat3.p2backend.repository.SleepingBagRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.boot.CommandLineRunner;
@@ -14,9 +16,12 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class DeveloperData implements CommandLineRunner {
 
+    SleepingBagRepository sleepingBagRepository;
+
     SleepingBagExternalRepository sleepingBagExternalRepository;
 
-    public DeveloperData(SleepingBagExternalRepository sleepingBagExternalRepository) {
+    public DeveloperData(SleepingBagRepository sleepingBagRepository, SleepingBagExternalRepository sleepingBagExternalRepository) {
+        this.sleepingBagRepository = sleepingBagRepository;
         this.sleepingBagExternalRepository = sleepingBagExternalRepository;
     }
 
@@ -59,6 +64,11 @@ public class DeveloperData implements CommandLineRunner {
                         record.get(11),
                         record.get(12)
                 );
+
+                SleepingBag sleepingBag = new SleepingBag(sleepingBagExternal);
+
+                sleepingBagRepository.save(sleepingBag);
+
                 sleepingBagExternalRepository.save(sleepingBagExternal);
             }
 
