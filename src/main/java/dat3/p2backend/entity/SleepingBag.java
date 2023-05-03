@@ -38,28 +38,26 @@ public class SleepingBag {
     this.brand = sleepingBagExternal.getBrand();
     this.model = sleepingBagExternal.getModel();
     this.sku = parseInt(sleepingBagExternal.getSku());
-    this.cost = parseDouble(sleepingBagExternal.getCost());
-    this.personHeight = parseInt(sleepingBagExternal.getPersonHeight());
-    this.comfortTemp = parseDouble(sleepingBagExternal.getComfortTemp());
-    this.lowerLimitTemp = parseDouble(sleepingBagExternal.getLowerLimitTemp());
+    //this.cost = parseDouble(sleepingBagExternal.getCost());
+    //this.personHeight = parseInt(sleepingBagExternal.getPersonHeight());
+    //this.comfortTemp = parseDouble(sleepingBagExternal.getComfortTemp());
+    //this.lowerLimitTemp = parseDouble(sleepingBagExternal.getLowerLimitTemp());
 
-    this.innerMaterial = sleepingBagExternal.getInnerMaterial().substring(
-            0,
-            sleepingBagExternal.getInnerMaterial().indexOf("(")-1).trim();
 
-    this.downFillPower = sleepingBagExternal.getInnerMaterial().substring(
-            sleepingBagExternal.getInnerMaterial().indexOf("(")+1,
-            sleepingBagExternal.getInnerMaterial().indexOf(")"));
+    //this.innerMaterial = sleepingBagExternal.getInnerMaterial().substring(
+     //       0,
+       //     sleepingBagExternal.getInnerMaterial().indexOf("(")-1).trim();
+
+
+    //this.downFillPower = sleepingBagExternal.getInnerMaterial().substring(
+    //        sleepingBagExternal.getInnerMaterial().indexOf("(")+1,
+    //        sleepingBagExternal.getInnerMaterial().indexOf(")"));
 
     this.productWeight = parseInt(sleepingBagExternal.getProductWeight());
-    this.stockLocation = sleepingBagExternal.getStockLocation();
-    if (sleepingBagExternal.getModel().contains("(W)")) {
-      this.isFemale = true;
-    }
-    else {
-      this.isFemale = false;
-    }
+
+
+    this.isFemale = sleepingBagExternal.getModel().contains("(W)");
+
 
   }
-
 }

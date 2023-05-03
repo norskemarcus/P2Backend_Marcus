@@ -8,18 +8,14 @@ import lombok.Setter;
 @Setter
 public class SleepingBagResponse {
 
-  Integer id;
+  Integer sku;
   String brand;
   String model;
-  Double cost;
 
 
   public SleepingBagResponse(SleepingBag sleepingBag) {
-    //this.id = sleepingBag.getId();
-   /*
+    this.sku = sleepingBag.getSku();
     this.brand = sleepingBag.getBrand();
     this.model = sleepingBag.getModel();
-    this.cost = sleepingBag.getCost();
-    */
   }
 }
