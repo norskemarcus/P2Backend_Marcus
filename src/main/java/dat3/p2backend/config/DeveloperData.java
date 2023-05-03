@@ -6,11 +6,10 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.yaml.snakeyaml.reader.UnicodeReader;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class DeveloperData implements CommandLineRunner {
@@ -30,7 +29,7 @@ public class DeveloperData implements CommandLineRunner {
         String path = "sovepose-data.csv";
 
         try {
-            Reader in = new FileReader(path);
+            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(path),"ISO-8859-1"));
 
             CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
                     .setDelimiter(';')
