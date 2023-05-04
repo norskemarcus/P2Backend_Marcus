@@ -21,21 +21,82 @@ public class SleepingBagService {
 
 
     public List<SleepingBagResponse> getSleepingBags(SleepingBagRequest sleepingBagRequest){
-        List<SleepingBag> sleepingBags = sleepingBagRepository.findAll();
+        List<SleepingBag> sleepingBagsAll = sleepingBagRepository.findAll();
 
-        List<SleepingBag> sleepingBagsFiltered = new ArrayList<>();
-        for (SleepingBag sleepingBag : sleepingBags) {
-            if (sleepingBagRequest.getIsColdSensitive()) {
-                if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getComfortTemp()) {
-                    sleepingBagsFiltered.add(sleepingBag);
-                }
-            }
-            else {
-                if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getLowerLimitTemp()) {
-                    sleepingBagsFiltered.add(sleepingBag);
+        List<SleepingBag> sleepingBagsTempFiltered = new ArrayList<>();
+        if (sleepingBagRequest.getEnvironmentTemperatureMin() != null) {
+            for (SleepingBag sleepingBag : sleepingBagsAll) {
+                if (sleepingBagRequest.getIsColdSensitive() != null && sleepingBagRequest.getIsColdSensitive()) {
+                    if (sleepingBag.getComfortTemp() != null) {
+                        if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getComfortTemp()) {
+                            sleepingBagsTempFiltered.add(sleepingBag);
+                        }
+                    } else {
+                        // todo
+                        // what about sleeping bags with neither comfortTemp or lowerLimit?
+                        if (sleepingBag.getLowerLimitTemp() != null) {
+                            if (sleepingBagRequest.getEnvironmentTemperatureMin() >= (sleepingBag.getLowerLimitTemp()) + 5.0) {
+                                sleepingBagsTempFiltered.add(sleepingBag);
+                            }
+                        }
+                    }
+                } else {
+                    // what about sleeping bags with neither comfortTemp or lowerLimit?
+                    if (sleepingBag.getLowerLimitTemp() != null) {
+                        if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getLowerLimitTemp()) {
+                            sleepingBagsTempFiltered.add(sleepingBag);
+                        }
+                    }
                 }
             }
         }
+        else {
+            sleepingBagsTempFiltered = sleepingBagsAll;
+        }
+
+        List<SleepingBag> sleepingBagsHeightFiltered = new ArrayList<>();
+        if (sleepingBagRequest.getPersonHeight() != null) {
+            for (SleepingBag sleepingBag : sleepingBagsTempFiltered) {
+                if (sleepingBag.getPersonHeight() != null) {
+                    if (sleepingBagRequest.getPersonHeight() <= sleepingBag.getPersonHeight()) {
+                        sleepingBagsHeightFiltered.add(sleepingBag);
+                    }
+                }
+            }
+        }
+        else {
+            sleepingBagsHeightFiltered = sleepingBagsTempFiltered;
+        }
+
+        List<SleepingBag> sleepingBagsFemaleFiltered = new ArrayList<>();
+        if (sleepingBagRequest.getIsFemale() != null) {
+            for (SleepingBag sleepingBag : sleepingBagsHeightFiltered) {
+                if (sleepingBag.getIsFemale() != null) {
+                    if (sleepingBagRequest.getIsFemale() == sleepingBag.getIsFemale()) {
+                        sleepingBagsFemaleFiltered.add(sleepingBag);
+                    }
+                }
+            }
+        }
+        else {
+            sleepingBagsFemaleFiltered = sleepingBagsHeightFiltered;
+        }
+
+        List<SleepingBag> sleepingBagsCostFiltered = new ArrayList<>();
+        if (sleepingBagRequest.getMaxCost() != null) {
+            for (SleepingBag sleepingBag : sleepingBagsFemaleFiltered) {
+                if (sleepingBag.getCost() != null) {
+                    if (sleepingBagRequest.getMaxCost() >= sleepingBag.getCost()) {
+                        sleepingBagsCostFiltered.add(sleepingBag);
+                    }
+                }
+            }
+        }
+        else {
+            sleepingBagsCostFiltered = sleepingBagsFemaleFiltered;
+        }
+
+        List<SleepingBag> sleepingBagsFiltered = sleepingBagsCostFiltered;
 
         List<SleepingBagResponse> sleepingBagResponses = sleepingBagsFiltered.stream().map(s -> new SleepingBagResponse(s)).toList();
         return sleepingBagResponses;
