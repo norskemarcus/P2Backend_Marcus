@@ -26,14 +26,18 @@ public class SleepingBagService {
         List<SleepingBagResponse> sleepingBagResponses = sleepingBags.stream()
             .filter(sleepingBag -> {
                 if (sleepingBagRequest.getIsColdSensitive()) {
-                    return sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+                    return sleepingBag.getComfortTemp() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
                 } else {
-                    return sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+                    return sleepingBag.getLowerLimitTemp() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
                 }
             })
             .filter(sleepingBag -> sleepingBagRequest.getMaxCost() == null || sleepingBag.getCost() <= sleepingBagRequest.getMaxCost())
             .filter(sleepingBag -> sleepingBagRequest.getInnerMaterial() == null || sleepingBag.getInnerMaterial().equals(sleepingBagRequest.getInnerMaterial()))
-            .map(sleepingbag -> new SleepingBagResponse(sleepingbag)).toList();
+            .filter(sleepingBag -> sleepingBagRequest.getPersonHeight() == null || sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight())
+            .map(SleepingBagResponse::new).toList();
+
+      return sleepingBagResponses;
+
 
         /*
         List<SleepingBag> sleepingBagsFiltered = new ArrayList<>();
@@ -52,7 +56,6 @@ public class SleepingBagService {
 
         List<SleepingBagResponse> sleepingBagResponses = sleepingBagsFiltered.stream().map(s -> new SleepingBagResponse(s)).toList();
         */
-        return sleepingBagResponses;
     }
 
 }
