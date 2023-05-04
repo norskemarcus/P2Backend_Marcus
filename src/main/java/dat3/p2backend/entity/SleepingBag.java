@@ -38,27 +38,50 @@ public class SleepingBag {
     this.brand = sleepingBagExternal.getBrand();
     this.model = sleepingBagExternal.getModel();
     this.sku = parseInt(sleepingBagExternal.getSku());
-    this.cost = parseDouble(sleepingBagExternal.getCost());
-    this.personHeight = parseInt(sleepingBagExternal.getPersonHeight());
-    this.comfortTemp = parseDouble(sleepingBagExternal.getComfortTemp());
-    this.lowerLimitTemp = parseDouble(sleepingBagExternal.getLowerLimitTemp());
+    this.cost = parseDouble(sleepingBagExternal.getCost().replaceAll(",","."));
 
-    this.innerMaterial = sleepingBagExternal.getInnerMaterial().substring(
-            0,
-            sleepingBagExternal.getInnerMaterial().indexOf("(")-1).trim();
+    if (sleepingBagExternal.getPersonHeight().contains("-")) {
+      this.personHeight = parseInt(sleepingBagExternal.getPersonHeight().substring(
+              sleepingBagExternal.getPersonHeight().indexOf("-") + 1,
+              sleepingBagExternal.getPersonHeight().length()));
+    }
+    else {
+      this.personHeight = parseInt(sleepingBagExternal.getPersonHeight());
+    }
 
-    this.downFillPower = sleepingBagExternal.getInnerMaterial().substring(
-            sleepingBagExternal.getInnerMaterial().indexOf("(")+1,
-            sleepingBagExternal.getInnerMaterial().indexOf(")"));
+    try {
+      this.comfortTemp = parseDouble(sleepingBagExternal.getComfortTemp().replaceAll(",","."));
+    } catch (Exception e) {
+      this.comfortTemp = null;
+    }
+
+    try {
+      this.lowerLimitTemp = parseDouble(sleepingBagExternal.getLowerLimitTemp().replaceAll(",","."));
+    } catch (Exception e) {
+      this.lowerLimitTemp = null;
+    }
+
+    if (sleepingBagExternal.getInnerMaterial().contains("(")) {
+        this.downFillPower = sleepingBagExternal.getInnerMaterial().substring(
+              sleepingBagExternal.getInnerMaterial().indexOf("(")+1,
+              sleepingBagExternal.getInnerMaterial().indexOf(")"));
+    }
+    else {
+        this.downFillPower = "";
+    }
+
+    if (this.downFillPower != "") {
+        this.innerMaterial = sleepingBagExternal.getInnerMaterial().substring(
+                0,
+                sleepingBagExternal.getInnerMaterial().indexOf("(")-1).trim();
+    }
+    else {
+      this.innerMaterial = sleepingBagExternal.getInnerMaterial();
+    }
 
     this.productWeight = parseInt(sleepingBagExternal.getProductWeight());
     this.stockLocation = sleepingBagExternal.getStockLocation();
-    if (sleepingBagExternal.getModel().contains("(W)")) {
-      this.isFemale = true;
-    }
-    else {
-      this.isFemale = false;
-    }
+    this.isFemale = sleepingBagExternal.getModel().contains("(W)");
 
   }
 
