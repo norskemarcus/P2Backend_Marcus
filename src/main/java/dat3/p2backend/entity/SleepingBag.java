@@ -84,5 +84,4 @@ public class SleepingBag {
     this.isFemale = sleepingBagExternal.getModel().contains("(W)");
 
   }
-
 }
