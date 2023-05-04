@@ -8,14 +8,31 @@ import lombok.Setter;
 @Setter
 public class SleepingBagResponse {
 
-  Integer sku;
   String brand;
   String model;
-
+  Integer sku;
+  Double cost;
+  Integer personHeight;
+  Double comfortTemp;
+  Double lowerLimitTemp;
+  String innerMaterial;
+  Integer productWeight;
+  String stockLocation;
 
   public SleepingBagResponse(SleepingBag sleepingBag) {
     this.sku = sleepingBag.getSku();
     this.brand = sleepingBag.getBrand();
     this.model = sleepingBag.getModel();
+    this.comfortTemp = sleepingBag.getComfortTemp();
+    this.lowerLimitTemp = sleepingBag.getLowerLimitTemp();
+    this.cost = sleepingBag.getCost();
+    this.personHeight = sleepingBag.getPersonHeight();
+    this.innerMaterial = sleepingBag.getInnerMaterial();
+    this.productWeight = sleepingBag.getProductWeight();
+    this.stockLocation = sleepingBag.getStockLocation();
   }
+
+
 }
+
+

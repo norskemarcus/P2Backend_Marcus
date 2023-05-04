@@ -8,10 +8,11 @@ import lombok.Setter;
 
 public class SleepingBagRequest {
 
-  Double height;
+  Double personHeight;
   Double environmentTemperatureMin;
-  Double environmentTemperatureMax;
-
+  Boolean isFemale;
   Boolean isColdSensitive;
+  Double maxCost;
+  String innerMaterial;
 
 }
