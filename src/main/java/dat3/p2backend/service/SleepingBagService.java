@@ -26,28 +26,22 @@ public class SleepingBagService {
         List<SleepingBag> sleepingBagsTempFiltered = new ArrayList<>();
         if (sleepingBagRequest.getEnvironmentTemperatureMin() != null) {
             for (SleepingBag sleepingBag : sleepingBagsAll) {
-                if (sleepingBagRequest.getIsColdSensitive() != null && sleepingBagRequest.getIsColdSensitive()) {
-                    if (sleepingBag.getComfortTemp() != null) {
-                        if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getComfortTemp()) {
-                            sleepingBagsTempFiltered.add(sleepingBag);
+                if (sleepingBag.getComfortTemp() != null && sleepingBag.getLowerLimitTemp() != null) {
+                    if (sleepingBagRequest.getIsColdSensitive() != null) {
+                        if (sleepingBagRequest.getIsColdSensitive()) {
+                            if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getComfortTemp()) {
+                                sleepingBagsTempFiltered.add(sleepingBag);
+                            }
                         }
-                    } else {
-                        // todo
-                        // what about sleeping bags with neither comfortTemp or lowerLimit?
-                        if (sleepingBag.getLowerLimitTemp() != null) {
-                            if (sleepingBagRequest.getEnvironmentTemperatureMin() >= (sleepingBag.getLowerLimitTemp()) + 5.0) {
+                        else {
+                            if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getLowerLimitTemp()) {
                                 sleepingBagsTempFiltered.add(sleepingBag);
                             }
                         }
                     }
-                } else {
-                    // what about sleeping bags with neither comfortTemp or lowerLimit?
-                    if (sleepingBag.getLowerLimitTemp() != null) {
-                        if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getLowerLimitTemp()) {
-                            sleepingBagsTempFiltered.add(sleepingBag);
-                        }
-                    }
                 }
+                // todo
+                // what about sleeping bags with no only recommendedTEMP?
             }
         }
         else {
@@ -96,10 +90,30 @@ public class SleepingBagService {
             sleepingBagsCostFiltered = sleepingBagsFemaleFiltered;
         }
 
-        List<SleepingBag> sleepingBagsFiltered = sleepingBagsCostFiltered;
+        List<SleepingBag> sleepingBagsInnerMaterialFiltered = new ArrayList<>();
+        if (sleepingBagRequest.getInnerMaterial() != null) {
+            for (SleepingBag sleepingBag : sleepingBagsCostFiltered) {
+                if (sleepingBag.getInnerMaterial() != null) {
+                    if (sleepingBagRequest.getInnerMaterial().equals( sleepingBag.getInnerMaterial())) {
+                        sleepingBagsInnerMaterialFiltered.add(sleepingBag);
+                    }
+                }
+            }
+        }
+        else {
+            sleepingBagsInnerMaterialFiltered = sleepingBagsCostFiltered;
+        }
+
+        List<SleepingBag> sleepingBagsFiltered = sleepingBagsInnerMaterialFiltered;
 
         List<SleepingBagResponse> sleepingBagResponses = sleepingBagsFiltered.stream().map(s -> new SleepingBagResponse(s)).toList();
         return sleepingBagResponses;
+    }
+
+    public SleepingBagResponse getSleepingBagBySku(Integer sku) {
+        SleepingBag sleepingBag = sleepingBagRepository.findById(sku).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Sleeping bag not found"));
+        return new SleepingBagResponse(sleepingBag);
     }
 
 }
