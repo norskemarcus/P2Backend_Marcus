@@ -42,8 +42,8 @@ public class SleepingBag {
 
     if (sleepingBagExternal.getPersonHeight().contains("-")) {
       this.personHeight = parseInt(sleepingBagExternal.getPersonHeight().substring(
-              sleepingBagExternal.getPersonHeight().indexOf("-") + 1,
-              sleepingBagExternal.getPersonHeight().length()));
+              sleepingBagExternal.getPersonHeight().indexOf("-") + 1));
+              //sleepingBagExternal.getPersonHeight().length()));
     }
     else {
       this.personHeight = parseInt(sleepingBagExternal.getPersonHeight());
