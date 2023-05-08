@@ -1,10 +1,11 @@
 package dat3.p2backend.api;
 
+import dat3.p2backend.dto.SleepingBagRequest;
+import dat3.p2backend.dto.SleepingBagResponse;
 import dat3.p2backend.service.SleepingBagService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/sleeping-bags")
@@ -17,8 +18,14 @@ public class SleepingBagController {
         this.sleepingBagService = sleepingBagService;
     }
 
-    @GetMapping()
-    String getSleepingBags() {
-        return "hej";
+    @PostMapping
+    public List<SleepingBagResponse> getSleepingBags(@RequestBody SleepingBagRequest sleepingBagRequest){
+        return sleepingBagService.getSleepingBags(sleepingBagRequest);
     }
+
+    @GetMapping("/{sku}")
+    public SleepingBagResponse getSleepingBagBySku(@PathVariable Integer sku) {
+        return sleepingBagService.getSleepingBagBySku(sku);
+    }
+
 }
