@@ -23,9 +23,11 @@ public class SleepingBagService {
     public List<SleepingBagResponse> getSleepingBags(SleepingBagRequest sleepingBagRequest){
         List<SleepingBag> sleepingBags = sleepingBagRepository.findAll();
 
+        //TODO: Mangler køn-filtrering
+
         List<SleepingBagResponse> sleepingBagResponses = sleepingBags.stream()
             .filter(sleepingBag -> {
-                if (sleepingBagRequest.getIsColdSensitive()) {
+                if (sleepingBagRequest.getIsColdSensitive() == null || sleepingBagRequest.getIsColdSensitive()) {
                     return sleepingBag.getComfortTemp() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
                 } else {
                     return sleepingBag.getLowerLimitTemp() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
