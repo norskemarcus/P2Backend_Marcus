@@ -37,25 +37,12 @@ public class SleepingBagService {
             .map(SleepingBagResponse::new).toList();
 
       return sleepingBagResponses;
+    }
 
-
-        /*
-        List<SleepingBag> sleepingBagsFiltered = new ArrayList<>();
-        for (SleepingBag sleepingBag : sleepingBags) {
-            if (sleepingBagRequest.getIsColdSensitive()) {
-                if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getComfortTemp()) {
-                    sleepingBagsFiltered.add(sleepingBag);
-                }
-            }
-            else {
-                if (sleepingBagRequest.getEnvironmentTemperatureMin() >= sleepingBag.getLowerLimitTemp()) {
-                    sleepingBagsFiltered.add(sleepingBag);
-                }
-            }
-        }
-
-        List<SleepingBagResponse> sleepingBagResponses = sleepingBagsFiltered.stream().map(s -> new SleepingBagResponse(s)).toList();
-        */
+    public SleepingBagResponse getSleepingBagBySku(Integer sku) {
+        SleepingBag sleepingBag = sleepingBagRepository.findById(sku).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Sleeping bag not found"));
+        return new SleepingBagResponse(sleepingBag);
     }
 
 }

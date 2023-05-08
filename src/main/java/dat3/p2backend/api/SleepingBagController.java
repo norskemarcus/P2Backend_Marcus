@@ -23,4 +23,9 @@ public class SleepingBagController {
         return sleepingBagService.getSleepingBags(sleepingBagRequest);
     }
 
+    @GetMapping("/{sku}")
+    public SleepingBagResponse getSleepingBagBySku(@PathVariable Integer sku) {
+        return sleepingBagService.getSleepingBagBySku(sku);
+    }
+
 }
