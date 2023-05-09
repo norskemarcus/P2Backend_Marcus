@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Service
 public class SleepingBagService {
@@ -25,18 +26,27 @@ public class SleepingBagService {
 
         //TODO: Mangler køn-filtrering
 
-        List<SleepingBagResponse> sleepingBagResponses = sleepingBags.stream()
-            .filter(sleepingBag -> {
-                if (sleepingBagRequest.getIsColdSensitive() == null || sleepingBagRequest.getIsColdSensitive()) {
-                    return sleepingBag.getComfortTemp() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
-                } else {
-                    return sleepingBag.getLowerLimitTemp() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
-                }
-            })
-            .filter(sleepingBag -> sleepingBagRequest.getMaxCost() == null || sleepingBag.getCost() <= sleepingBagRequest.getMaxCost())
-            .filter(sleepingBag -> sleepingBagRequest.getInnerMaterial() == null || sleepingBag.getInnerMaterial().equals(sleepingBagRequest.getInnerMaterial()))
-            .filter(sleepingBag -> sleepingBagRequest.getPersonHeight() == null || sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight())
-            .map(SleepingBagResponse::new).toList();
+      List<SleepingBagResponse> sleepingBagResponses;
+
+      sleepingBagResponses = sleepingBags.stream()
+          .filter(sleepingBag -> {
+            if (sleepingBagRequest.getIsColdSensitive() == null || sleepingBagRequest.getIsColdSensitive()) {
+              return sleepingBag.getComfortTemp() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+            } else {
+              return sleepingBag.getLowerLimitTemp() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+            }
+          })
+          .filter(sleepingBag -> {
+            if (!sleepingBagRequest.getIsFemale()) {
+              return !sleepingBag.getIsFemale();
+            } else {
+              return true;
+            }
+          })
+          .filter(sleepingBag -> sleepingBagRequest.getMaxCost() == null || sleepingBag.getCost() <= sleepingBagRequest.getMaxCost())
+          .filter(sleepingBag -> sleepingBagRequest.getInnerMaterial() == null || sleepingBag.getInnerMaterial().equals(sleepingBagRequest.getInnerMaterial()))
+          .filter(sleepingBag -> sleepingBagRequest.getPersonHeight() == null || sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight())
+          .map(SleepingBagResponse::new).toList();
 
       return sleepingBagResponses;
     }
