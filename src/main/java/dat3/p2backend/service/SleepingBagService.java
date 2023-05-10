@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 public class SleepingBagService {
@@ -23,20 +25,52 @@ public class SleepingBagService {
     public List<SleepingBagResponse> getSleepingBags(SleepingBagRequest sleepingBagRequest){
         List<SleepingBag> sleepingBags = sleepingBagRepository.findAll();
 
-        //TODO: Mangler køn-filtrering
 
-        List<SleepingBagResponse> sleepingBagResponses = sleepingBags.stream()
+      List<SleepingBagResponse> sleepingBagResponses;
+
+      sleepingBagResponses = sleepingBags.stream()
+          .filter(sleepingBag -> {
+            if (sleepingBagRequest.getIsColdSensitive() == null || sleepingBagRequest.getIsColdSensitive()) {
+              return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+            } else {
+              return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+            }
+          })
+          .filter(sleepingBag -> sleepingBagRequest.getMaxCost() == null || sleepingBag.getCost() <= sleepingBagRequest.getMaxCost())
+          .filter(sleepingBag -> sleepingBagRequest.getInnerMaterial() == null || sleepingBag.getInnerMaterial().equals(sleepingBagRequest.getInnerMaterial()))
+          .filter(sleepingBag -> sleepingBagRequest.getPersonHeight() == null ||
+              (
+                  //Skal måske laves om til cm i stedet for %?
+                  sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight()) &&
+                  //(sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight()) / sleepingBagRequest.getPersonHeight() * 100 <= 20
+                  (sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight() <= 15)
+          )
+          .map(SleepingBagResponse::new)
+          .toList();
+
+      //Fjern soveposer, der er for lange:
+      //Hvis højde ikke er null sorteres soveposerne efter modelnavn og derefter længde,
+      // så den eventuelt for lange sovepose filtreres fra
+      if(sleepingBagRequest.getPersonHeight() != null) {
+        sleepingBagResponses = sleepingBags.stream()
+          .sorted(Comparator.comparing(SleepingBag::getModel).thenComparing(SleepingBag::getPersonHeight))
+            .filter(distinctByKey(SleepingBag::getModel))
+            .map(SleepingBagResponse::new)
+            .toList();
+      }
+
+      if(sleepingBagRequest.getIsFemale() != null) {
+        sleepingBagResponses = sleepingBags.stream()
             .filter(sleepingBag -> {
-                if (sleepingBagRequest.getIsColdSensitive() == null || sleepingBagRequest.getIsColdSensitive()) {
-                    return sleepingBag.getComfortTemp() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
-                } else {
-                    return sleepingBag.getLowerLimitTemp() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
-                }
+              if (sleepingBagRequest.getIsFemale() == null || !sleepingBagRequest.getIsFemale()) {
+                return sleepingBag.getIsFemale() == null || !sleepingBag.getIsFemale();
+              } else {
+                return true;
+              }
             })
-            .filter(sleepingBag -> sleepingBagRequest.getMaxCost() == null || sleepingBag.getCost() <= sleepingBagRequest.getMaxCost())
-            .filter(sleepingBag -> sleepingBagRequest.getInnerMaterial() == null || sleepingBag.getInnerMaterial().equals(sleepingBagRequest.getInnerMaterial()))
-            .filter(sleepingBag -> sleepingBagRequest.getPersonHeight() == null || sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight())
-            .map(SleepingBagResponse::new).toList();
+            .map(SleepingBagResponse::new)
+            .toList();
+      }
 
       return sleepingBagResponses;
     }
@@ -46,5 +80,12 @@ public class SleepingBagService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Sleeping bag not found"));
         return new SleepingBagResponse(sleepingBag);
     }
+
+    // Taget fra Stack overflow
+    // https://stackoverflow.com/questions/23699371/java-8-distinct-by-property
+  public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+    Set<Object> seen = ConcurrentHashMap.newKeySet();
+    return t -> seen.add(keyExtractor.apply(t));
+  }
 
 }
