@@ -34,6 +34,8 @@ public class SleepingBag {
   String stockLocation;
   Boolean isFemale;
 
+  String note;
+
   public SleepingBag(SleepingBagExternal sleepingBagExternal) {
     this.brand = sleepingBagExternal.getBrand();
     this.model = sleepingBagExternal.getModel();
@@ -51,13 +53,17 @@ public class SleepingBag {
     try {
       this.comfortTemp = parseDouble(sleepingBagExternal.getComfortTemp().replaceAll(",","."));
     } catch (Exception e) {
-      this.comfortTemp = null;
+      this.comfortTemp = parseDouble(sleepingBagExternal.getRecommendedTemp());
     }
 
     try {
       this.lowerLimitTemp = parseDouble(sleepingBagExternal.getLowerLimitTemp().replaceAll(",","."));
     } catch (Exception e) {
-      this.lowerLimitTemp = null;
+      this.lowerLimitTemp = parseDouble(sleepingBagExternal.getRecommendedTemp());
+    }
+
+    if(lowerLimitTemp.equals(comfortTemp)) {
+      this.note = "OBS! Angivet temperature er ikke målt efter EN-teststandard. Snak med en sælger, hvis du er i tvivl.";
     }
 
     if (sleepingBagExternal.getInnerMaterial().contains("(")) {
