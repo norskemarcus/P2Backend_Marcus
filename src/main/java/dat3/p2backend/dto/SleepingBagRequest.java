@@ -12,6 +12,7 @@ public class SleepingBagRequest {
   Double environmentTemperatureMin;
   Boolean isFemale;
   Boolean isColdSensitive;
+  Double minCost;
   Double maxCost;
   String innerMaterial;
 
