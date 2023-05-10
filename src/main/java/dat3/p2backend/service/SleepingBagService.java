@@ -36,7 +36,7 @@ public class SleepingBagService {
               return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
             }
           })
-          .filter(sleepingBag -> sleepingBagRequest.getMaxCost() == null || sleepingBag.getCost() > sleepingBagRequest.getMinCost() &&
+          .filter(sleepingBag -> sleepingBagRequest.getMaxCost() == null || sleepingBagRequest.getMinCost() == null || sleepingBag.getCost() > sleepingBagRequest.getMinCost() &&
               sleepingBag.getCost() <= sleepingBagRequest.getMaxCost())
           .filter(sleepingBag -> sleepingBagRequest.getInnerMaterial() == null || sleepingBag.getInnerMaterial().equals(sleepingBagRequest.getInnerMaterial()))
           .filter(sleepingBag -> sleepingBagRequest.getPersonHeight() == null ||
