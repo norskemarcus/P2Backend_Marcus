@@ -69,6 +69,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST,"/api/user-with-role").permitAll() //Clients can create a user for themself
             .requestMatchers(HttpMethod.POST,"/api/sleeping-bags").permitAll() //Website can see the requested sleeping bags
             .requestMatchers(HttpMethod.GET,"/api/sleeping-bags/{sku}").permitAll() //a single sleeping bag info can be pulled
+            .requestMatchers(HttpMethod.POST,"/api/member").permitAll() //create a user in the system
 
              //This is for demo purposes only, and should be removed for a real system
 //            .requestMatchers(HttpMethod.GET,"/api/demo/anonymous").permitAll()
