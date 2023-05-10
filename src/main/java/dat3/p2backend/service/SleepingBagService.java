@@ -37,8 +37,8 @@ public class SleepingBagService {
             }
           })
           .filter(sleepingBag -> {
-            if (!sleepingBagRequest.getIsFemale()) {
-              return !sleepingBag.getIsFemale();
+            if (sleepingBagRequest.getIsFemale() == null || !sleepingBagRequest.getIsFemale()) {
+              return sleepingBag.getIsFemale() == null || !sleepingBag.getIsFemale();
             } else {
               return true;
             }
@@ -47,8 +47,10 @@ public class SleepingBagService {
           .filter(sleepingBag -> sleepingBagRequest.getInnerMaterial() == null || sleepingBag.getInnerMaterial().equals(sleepingBagRequest.getInnerMaterial()))
           .filter(sleepingBag -> sleepingBagRequest.getPersonHeight() == null ||
               (
+                  //Skal måske laves om til cm i stedet for %?
                   sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight()) &&
-                  (sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight()) / sleepingBagRequest.getPersonHeight() * 100 <= 20
+                  //(sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight()) / sleepingBagRequest.getPersonHeight() * 100 <= 20
+                  (sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight() <= 15)
           )
           //Sorteres efter modelnavn og længde, så den eventuelt for lange kan filtreres fra
           .sorted(Comparator.comparing(SleepingBag::getModel).thenComparing(SleepingBag::getPersonHeight))
