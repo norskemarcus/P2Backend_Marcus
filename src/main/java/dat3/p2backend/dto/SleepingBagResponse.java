@@ -18,6 +18,7 @@ public class SleepingBagResponse {
   String innerMaterial;
   Integer productWeight;
   String stockLocation;
+  String note;
 
   public SleepingBagResponse(SleepingBag sleepingBag) {
     this.sku = sleepingBag.getSku();
@@ -30,6 +31,7 @@ public class SleepingBagResponse {
     this.innerMaterial = sleepingBag.getInnerMaterial();
     this.productWeight = sleepingBag.getProductWeight();
     this.stockLocation = sleepingBag.getStockLocation();
+    this.note = sleepingBag.getNote();
   }
 
 

@@ -31,5 +31,6 @@ public class SleepingBagExternal {
     String colour;
     String season;
     String stockLocation;
+    String note;
 
 }

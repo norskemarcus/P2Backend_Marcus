@@ -41,7 +41,7 @@ class SleepingBagServiceTest {
     SleepingBagRequest sleepingBagRequest = new SleepingBagRequest();
     sleepingBagRequest.setPersonHeight(175.0);
     sleepingBagRequest.setEnvironmentTemperatureMin(1.0);
-    sleepingBagRequest.setIsFemale(false);
+    sleepingBagRequest.setIsFemale(true);
     sleepingBagRequest.setIsColdSensitive(true);
     sleepingBagRequest.setMaxCost(3500.0);
     sleepingBagRequest.setInnerMaterial("Dun");
