@@ -31,16 +31,9 @@ public class SleepingBagService {
       sleepingBagResponses = sleepingBags.stream()
           .filter(sleepingBag -> {
             if (sleepingBagRequest.getIsColdSensitive() == null || sleepingBagRequest.getIsColdSensitive()) {
-              return sleepingBag.getComfortTemp() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+              return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
             } else {
-              return sleepingBag.getLowerLimitTemp() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
-            }
-          })
-          .filter(sleepingBag -> {
-            if (sleepingBagRequest.getIsFemale() == null || !sleepingBagRequest.getIsFemale()) {
-              return sleepingBag.getIsFemale() == null || !sleepingBag.getIsFemale();
-            } else {
-              return true;
+              return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
             }
           })
           .filter(sleepingBag -> sleepingBagRequest.getMaxCost() == null || sleepingBag.getCost() <= sleepingBagRequest.getMaxCost())
@@ -52,16 +45,32 @@ public class SleepingBagService {
                   //(sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight()) / sleepingBagRequest.getPersonHeight() * 100 <= 20
                   (sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight() <= 15)
           )
-          //Sorteres efter modelnavn og længde, så den eventuelt for lange kan filtreres fra
-          .sorted(Comparator.comparing(SleepingBag::getModel).thenComparing(SleepingBag::getPersonHeight))
-          .filter(distinctByKey(SleepingBag::getModel))
           .map(SleepingBagResponse::new)
           .toList();
 
+      //Fjern soveposer, der er for lange:
+      //Hvis højde ikke er null sorteres soveposerne efter modelnavn og derefter længde,
+      // så den eventuelt for lange sovepose filtreres fra
+      if(sleepingBagRequest.getPersonHeight() != null) {
+        sleepingBagResponses = sleepingBags.stream()
+          .sorted(Comparator.comparing(SleepingBag::getModel).thenComparing(SleepingBag::getPersonHeight))
+            .filter(distinctByKey(SleepingBag::getModel))
+            .map(SleepingBagResponse::new)
+            .toList();
+      }
 
-
-      // Fjern soveposer, der er for lange:
-
+      if(sleepingBagRequest.getIsFemale() != null) {
+        sleepingBagResponses = sleepingBags.stream()
+            .filter(sleepingBag -> {
+              if (sleepingBagRequest.getIsFemale() == null || !sleepingBagRequest.getIsFemale()) {
+                return sleepingBag.getIsFemale() == null || !sleepingBag.getIsFemale();
+              } else {
+                return true;
+              }
+            })
+            .map(SleepingBagResponse::new)
+            .toList();
+      }
 
       return sleepingBagResponses;
     }
