@@ -22,59 +22,80 @@ public class SleepingBagService {
     }
 
 
-    public List<SleepingBagResponse> getSleepingBags(SleepingBagRequest sleepingBagRequest){
-        List<SleepingBag> sleepingBags = sleepingBagRepository.findAll();
+  public List<SleepingBagResponse> getSleepingBags(SleepingBagRequest sleepingBagRequest) {
 
+    List<SleepingBag> sleepingBags = sleepingBagRepository.findAll().stream()
+        .filter(sleepingBag -> filterByTemperature(sleepingBag, sleepingBagRequest))
+        .filter(sleepingBag -> filterByCost(sleepingBag, sleepingBagRequest))
+        .filter(sleepingBag -> filterByInnerMaterial(sleepingBag, sleepingBagRequest))
+        .filter(sleepingBag -> filterByPersonHeight(sleepingBag, sleepingBagRequest))
+        .toList();
 
-      List<SleepingBagResponse> sleepingBagResponses;
+    List<SleepingBagResponse> sleepingBagsFiltered;
 
-      sleepingBagResponses = sleepingBags.stream()
-          .filter(sleepingBag -> {
-            if (sleepingBagRequest.getIsColdSensitive() == null || sleepingBagRequest.getIsColdSensitive()) {
-              return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
-            } else {
-              return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
-            }
-          })
-          .filter(sleepingBag -> sleepingBagRequest.getMaxCost() == null || sleepingBagRequest.getMinCost() == null || sleepingBag.getCost() > sleepingBagRequest.getMinCost() &&
-              sleepingBag.getCost() <= sleepingBagRequest.getMaxCost())
-          .filter(sleepingBag -> sleepingBagRequest.getInnerMaterial() == null || sleepingBag.getInnerMaterial().equals(sleepingBagRequest.getInnerMaterial()))
-          .filter(sleepingBag -> sleepingBagRequest.getPersonHeight() == null ||
-              (
-                  //Skal måske laves om til cm i stedet for %?
-                  sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight()) &&
-                  //(sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight()) / sleepingBagRequest.getPersonHeight() * 100 <= 20
-                  (sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight() <= 15)
-          )
+    if (sleepingBagRequest.getIsFemale() != null && sleepingBagRequest.getPersonHeight() != null) {
+      sleepingBagsFiltered = sleepingBags.stream()
+          .filter(sleepingBag -> filterByCost(sleepingBag, sleepingBagRequest))
+          .filter(sleepingBag -> sleepingBag.getIsFemale() == null || sleepingBag.getIsFemale() == sleepingBagRequest.getIsFemale())
+          .filter(sleepingBag -> sleepingBag.getPersonHeight() == null || sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight())
           .map(SleepingBagResponse::new)
+          .sorted(Comparator.comparing(SleepingBagResponse::getModel).thenComparing(SleepingBagResponse::getPersonHeight))
+          .distinct()
           .toList();
-
-      //Fjern soveposer, der er for lange:
-      //Hvis højde ikke er null sorteres soveposerne efter modelnavn og derefter længde,
-      // så den eventuelt for lange sovepose filtreres fra
-      if(sleepingBagRequest.getPersonHeight() != null) {
-        sleepingBagResponses = sleepingBags.stream()
-          .sorted(Comparator.comparing(SleepingBag::getModel).thenComparing(SleepingBag::getPersonHeight))
-            .filter(distinctByKey(SleepingBag::getModel))
-            .map(SleepingBagResponse::new)
-            .toList();
-      }
-
-      if(sleepingBagRequest.getIsFemale() != null) {
-        sleepingBagResponses = sleepingBags.stream()
-            .filter(sleepingBag -> {
-              if (sleepingBagRequest.getIsFemale() == null || !sleepingBagRequest.getIsFemale()) {
-                return sleepingBag.getIsFemale() == null || !sleepingBag.getIsFemale();
-              } else {
-                return true;
-              }
-            })
-            .map(SleepingBagResponse::new)
-            .toList();
-      }
-
-      return sleepingBagResponses;
+    } else if (sleepingBagRequest.getIsFemale() != null) {
+      sleepingBagsFiltered = sleepingBags.stream()
+          .filter(sleepingBag -> filterByCost(sleepingBag, sleepingBagRequest))
+          .filter(sleepingBag -> sleepingBag.getIsFemale() == null || sleepingBag.getIsFemale() == sleepingBagRequest.getIsFemale())
+          .map(SleepingBagResponse::new)
+          .sorted(Comparator.comparing(SleepingBagResponse::getModel).thenComparing(SleepingBagResponse::getPersonHeight))
+          .distinct()
+          .toList();
+    } else if (sleepingBagRequest.getPersonHeight() != null) {
+      sleepingBagsFiltered = sleepingBags.stream()
+          .filter(sleepingBag -> filterByCost(sleepingBag, sleepingBagRequest))
+          .filter(sleepingBag -> sleepingBag.getPersonHeight() == null || sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight())
+          .map(SleepingBagResponse::new)
+          .sorted(Comparator.comparing(SleepingBagResponse::getModel).thenComparing(SleepingBagResponse::getPersonHeight))
+          .distinct()
+          .toList();
+    } else {
+      sleepingBagsFiltered = sleepingBags.stream().map(SleepingBagResponse::new).toList();
     }
+
+    return sleepingBagsFiltered;
+
+  }
+
+  private boolean filterByTemperature(SleepingBag sleepingBag, SleepingBagRequest sleepingBagRequest) {
+    if (sleepingBagRequest.getIsColdSensitive() == null || sleepingBagRequest.getIsColdSensitive()) {
+      return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+    } else {
+      return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+    }
+  }
+
+  private boolean filterByCost(SleepingBag sleepingBag, SleepingBagRequest sleepingBagRequest) {
+    return sleepingBagRequest.getMaxCost() == null || sleepingBagRequest.getMinCost() == null || sleepingBag.getCost() > sleepingBagRequest.getMinCost() &&
+        sleepingBag.getCost() <= sleepingBagRequest.getMaxCost();
+  }
+
+  private boolean filterByInnerMaterial(SleepingBag sleepingBag, SleepingBagRequest sleepingBagRequest) {
+    return sleepingBagRequest.getInnerMaterial() == null || sleepingBag.getInnerMaterial().equals(sleepingBagRequest.getInnerMaterial());
+  }
+
+  private boolean filterByPersonHeight(SleepingBag sleepingBag, SleepingBagRequest sleepingBagRequest) {
+    return sleepingBagRequest.getPersonHeight() == null ||
+        (sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight()) &&
+            (sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight() <= 15);
+  }
+
+  private boolean filterByGender(SleepingBag sleepingBag, SleepingBagRequest sleepingBagRequest) {
+    if (sleepingBagRequest.getIsFemale() == null || !sleepingBagRequest.getIsFemale()) {
+      return sleepingBag.getIsFemale() == null || !sleepingBag.getIsFemale();
+    } else {
+      return true;
+    }
+  }
 
     public SleepingBagResponse getSleepingBagBySku(Integer sku) {
         SleepingBag sleepingBag = sleepingBagRepository.findById(sku).orElseThrow(() ->
