@@ -25,8 +25,13 @@ private PasswordEncoder passwordEncoder;
 
   public MemberResponse addUserWithRoles(MemberRequest request, Role user) {
 
+    if(request.getPassword().isEmpty() || request.getEmail().isEmpty() || !request.getEmail().contains("@")
+      || !request.getEmail().contains(".")){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Venligst udfyld email og password");
+    }
+
         if(memberRepository.existsById(request.getEmail())){
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"This email is used by another user");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email er allerede registrered");
     }
     String pw = passwordEncoder.encode(request.getPassword());
 
