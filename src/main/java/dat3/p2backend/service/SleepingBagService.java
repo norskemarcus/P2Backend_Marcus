@@ -29,20 +29,41 @@ public class SleepingBagService {
         .filter(sleepingBag -> filterByCost(sleepingBag, sleepingBagRequest))
         .filter(sleepingBag -> filterByInnerMaterial(sleepingBag, sleepingBagRequest))
         .filter(sleepingBag -> filterByPersonHeight(sleepingBag, sleepingBagRequest))
-        .filter(sleepingBag -> filterByGender(sleepingBag, sleepingBagRequest))
-//        .map(SleepingBagResponse::new)
         .toList();
 
-    if (sleepingBagRequest.getPersonHeight() != null) {
-      List<SleepingBagResponse> sleepingBagsFiltered = sleepingBags.stream()
-          .sorted(Comparator.comparing(SleepingBag::getModel).thenComparing(SleepingBag::getPersonHeight))
-          .filter(distinctByKey(SleepingBag::getModel))
+    List<SleepingBagResponse> sleepingBagsFiltered;
+
+    if (sleepingBagRequest.getIsFemale() != null && sleepingBagRequest.getPersonHeight() != null) {
+      sleepingBagsFiltered = sleepingBags.stream()
+          .filter(sleepingBag -> filterByCost(sleepingBag, sleepingBagRequest))
+          .filter(sleepingBag -> sleepingBag.getIsFemale() == null || sleepingBag.getIsFemale() == sleepingBagRequest.getIsFemale())
+          .filter(sleepingBag -> sleepingBag.getPersonHeight() == null || sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight())
           .map(SleepingBagResponse::new)
+          .sorted(Comparator.comparing(SleepingBagResponse::getModel).thenComparing(SleepingBagResponse::getPersonHeight))
+          .distinct()
           .toList();
-      return sleepingBagsFiltered;
+    } else if (sleepingBagRequest.getIsFemale() != null) {
+      sleepingBagsFiltered = sleepingBags.stream()
+          .filter(sleepingBag -> filterByCost(sleepingBag, sleepingBagRequest))
+          .filter(sleepingBag -> sleepingBag.getIsFemale() == null || sleepingBag.getIsFemale() == sleepingBagRequest.getIsFemale())
+          .map(SleepingBagResponse::new)
+          .sorted(Comparator.comparing(SleepingBagResponse::getModel).thenComparing(SleepingBagResponse::getPersonHeight))
+          .distinct()
+          .toList();
+    } else if (sleepingBagRequest.getPersonHeight() != null) {
+      sleepingBagsFiltered = sleepingBags.stream()
+          .filter(sleepingBag -> filterByCost(sleepingBag, sleepingBagRequest))
+          .filter(sleepingBag -> sleepingBag.getPersonHeight() == null || sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight())
+          .map(SleepingBagResponse::new)
+          .sorted(Comparator.comparing(SleepingBagResponse::getModel).thenComparing(SleepingBagResponse::getPersonHeight))
+          .distinct()
+          .toList();
+    } else {
+      sleepingBagsFiltered = sleepingBags.stream().map(SleepingBagResponse::new).toList();
     }
 
-    return sleepingBags.stream().map(SleepingBagResponse::new).toList();
+    return sleepingBagsFiltered;
+
   }
 
   private boolean filterByTemperature(SleepingBag sleepingBag, SleepingBagRequest sleepingBagRequest) {
