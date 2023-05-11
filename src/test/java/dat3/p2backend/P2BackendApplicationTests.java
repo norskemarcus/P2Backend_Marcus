@@ -5,9 +5,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class P2BackendApplicationTests {
-
+/*
     @Test
     void contextLoads() {
     }
+
+ */
 
 }

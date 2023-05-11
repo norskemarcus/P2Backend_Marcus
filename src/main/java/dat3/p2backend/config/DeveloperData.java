@@ -49,7 +49,7 @@ public class DeveloperData implements CommandLineRunner {
                     continue;
                 }
 
-                SleepingBagExternal sleepingBagExternal = new SleepingBagExternal(
+                SleepingBagExternal sleepingBagExternal = new SleepingBagExternal (
                         record.get(0),
                         record.get(1),
                         record.get(2),
@@ -62,7 +62,8 @@ public class DeveloperData implements CommandLineRunner {
                         record.get(9),
                         record.get(10),
                         record.get(11),
-                        record.get(12)
+                        record.get(12),
+                    record.get(13)
                 );
 
                 SleepingBag sleepingBag = new SleepingBag(sleepingBagExternal);
