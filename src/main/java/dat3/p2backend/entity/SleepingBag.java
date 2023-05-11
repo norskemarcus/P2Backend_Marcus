@@ -1,9 +1,6 @@
 package dat3.p2backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,11 +33,16 @@ public class SleepingBag {
 
   String note;
 
+  @OneToOne(mappedBy = "sleepingBag")
+  private ImageLink imageLink;
+
+
   public SleepingBag(SleepingBagExternal sleepingBagExternal) {
     this.brand = sleepingBagExternal.getBrand();
     this.model = sleepingBagExternal.getModel();
     this.sku = parseInt(sleepingBagExternal.getSku());
     this.cost = parseDouble(sleepingBagExternal.getCost().replaceAll(",","."));
+
 
     if (sleepingBagExternal.getPersonHeight().contains("-")) {
       this.personHeight = parseInt(sleepingBagExternal.getPersonHeight().substring(
