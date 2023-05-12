@@ -49,7 +49,7 @@ class SleepingBagServiceTest {
     sleepingBagRequest.setMaxCost(3500.0);
     sleepingBagRequest.setInnerMaterial("Dun");
 
-    sleepingBagService = new SleepingBagService(sleepingBagRepository);
+    sleepingBagService = new SleepingBagService(sleepingBagRepository, imageLinkRepository);
 
     List<SleepingBagResponse> sleepingBagResponses = sleepingBagService.getSleepingBags(sleepingBagRequest);
 

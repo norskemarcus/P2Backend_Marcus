@@ -15,14 +15,14 @@ public class ImageLink {
 
   @Id
   Integer skuId;
-  String imageLink;
+  String imageURL;
 
   @OneToOne(mappedBy = "imageLink")
   SleepingBag sleepingBag;
 
 
-  public ImageLink(String skuId, String imageLink) {
+  public ImageLink(String skuId, String imageURL) {
     this.skuId = parseInt(skuId);
-    this.imageLink = imageLink;
+    this.imageURL = imageURL;
   }
 }
