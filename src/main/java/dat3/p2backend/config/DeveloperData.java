@@ -8,16 +8,10 @@ import dat3.p2backend.repository.SleepingBagExternalRepository;
 import dat3.p2backend.repository.SleepingBagRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.yaml.snakeyaml.reader.UnicodeReader;
-
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+
 
 @Component
 public class DeveloperData implements CommandLineRunner {
@@ -25,7 +19,7 @@ public class DeveloperData implements CommandLineRunner {
     SleepingBagRepository sleepingBagRepository;
 
     SleepingBagExternalRepository sleepingBagExternalRepository;
-    private final ImageLinkRepository imageLinkRepository;
+    ImageLinkRepository imageLinkRepository;
 
     public DeveloperData(SleepingBagRepository sleepingBagRepository, SleepingBagExternalRepository sleepingBagExternalRepository,
                          ImageLinkRepository imageLinkRepository) {

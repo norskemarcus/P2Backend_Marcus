@@ -14,6 +14,7 @@ import static java.lang.Integer.parseInt;
 @NoArgsConstructor
 @AllArgsConstructor
 
+//@SecondaryTable(name = "image", pkJoinColumns=@PrimaryKeyJoinColumn(name="image.sku_id", referencedColumnName="sku"))
 @Entity
 public class SleepingBag {
   String brand;
@@ -32,8 +33,10 @@ public class SleepingBag {
   Boolean isFemale;
 
   String note;
+/*  @Column(table="image", name="imageLink", nullable=true)*/
 
-  @OneToOne(mappedBy = "sleepingBag")
+  @OneToOne
+  @PrimaryKeyJoinColumn(name = "sku")
   private ImageLink imageLink;
 
 

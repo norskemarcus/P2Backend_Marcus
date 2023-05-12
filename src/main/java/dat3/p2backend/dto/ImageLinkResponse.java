@@ -12,12 +12,11 @@ public class ImageLinkResponse {
 
   private Integer skuId;
   private String imageLink;
-  private SleepingBag sleepingBag;
 
 
   public ImageLinkResponse(ImageLink imageLink) {
     this.skuId = imageLink.getSkuId();
     this.imageLink = imageLink.getImageLink();
-    this.sleepingBag = imageLink.getSleepingBag();
+
   }
 }

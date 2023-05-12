@@ -14,12 +14,11 @@ import static java.lang.Integer.parseInt;
 public class ImageLink {
 
   @Id
-  private Integer skuId;
-  private String imageLink;
+  Integer skuId;
+  String imageLink;
 
-  @OneToOne
-  @JoinColumn(name = "sku")
- private SleepingBag sleepingBag;
+  @OneToOne(mappedBy = "imageLink")
+  SleepingBag sleepingBag;
 
 
   public ImageLink(String skuId, String imageLink) {

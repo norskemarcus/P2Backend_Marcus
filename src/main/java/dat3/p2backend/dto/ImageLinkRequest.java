@@ -11,5 +11,5 @@ public class ImageLinkRequest {
 
   private Integer sku;
   private String imageLink;
-  private SleepingBag sleepingBag;
+
 }
