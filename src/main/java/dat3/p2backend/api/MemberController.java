@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/member")
@@ -23,6 +25,11 @@ public class MemberController {
   @PostMapping
   public MemberResponse addUserWithRoles(@RequestBody MemberRequest request) {
     return memberService.addUserWithRoles (request, Role.USER);
+  }
+
+  @DeleteMapping()
+  public void deleteMemberById(Principal p) {
+    memberService.deleteMemberById(p.getName());
   }
 
 

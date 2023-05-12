@@ -40,4 +40,9 @@ private PasswordEncoder passwordEncoder;
     memberRepository.save(member);
     return new MemberResponse(member);
   }
+
+  public void deleteMemberById(String id) {
+    memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+    memberRepository.deleteById(id);
+  }
 }
