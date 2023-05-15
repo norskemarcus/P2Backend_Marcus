@@ -19,13 +19,13 @@ public class MemberResponse {
   Boolean isInStore;
 
 
-  public MemberResponse(Member member) {
+  /*public MemberResponse(Member member) {
     this.email = member.getEmail();
     this.personHeight = member.getPersonHeight();
     this.isFemale = member.getIsFemale();
     this.isColdSensitive = member.getIsColdSensitive();
 
-  }
+  }*/
 
 
   public MemberResponse(Member member, Result result) {
@@ -33,8 +33,14 @@ public class MemberResponse {
     this.personHeight = member.getPersonHeight();
     this.isFemale = member.getIsFemale();
     this.isColdSensitive = member.getIsColdSensitive();
-    this.environmentTemperatureMin = result.getEnvironmentTemperatureMin();
-    this.minCost = result.getMinCost();
+    /*this.environmentTemperatureMin = member.getResult().getEnvironmentTemperatureMin();
+    this.minCost = member.getResult().getMinCost();
+    this.maxCost = member.getResult().getMaxCost();
+    this.innerMaterial = member.getResult().getInnerMaterial();
+    this.isInStore = member.getResult().getIsInStore();
+*/
+   this.environmentTemperatureMin = result.getEnvironmentTemperatureMin();
+  this.minCost = result.getMinCost();
     this.maxCost = result.getMaxCost();
     this.innerMaterial = result.getInnerMaterial();
     this.isInStore = result.getIsInStore();

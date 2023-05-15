@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/member")
@@ -25,6 +27,11 @@ public class MemberController {
     return memberService.addUserWithRoles(request, Role.USER);
   }
 
+
+  @GetMapping
+  public MemberResponse getMember(Principal p){
+    return memberService.getMember(p.getName());
+  }
 
 
 }

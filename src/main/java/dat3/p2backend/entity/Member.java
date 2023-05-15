@@ -1,5 +1,6 @@
 package dat3.p2backend.entity;
 
+import dat3.p2backend.dto.MemberRequest;
 import dat3.security.entity.UserWithRoles;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -30,4 +31,14 @@ public class Member extends UserWithRoles {
     this.isFemale = isFemale;
     this.isColdSensitive = isColdSensitive;
   }
+
+
+  public Member(MemberRequest memberRequest, String password){
+    // username = email
+    super(memberRequest.getEmail(), password, memberRequest.getEmail());
+    this.personHeight = memberRequest.getPersonHeight();
+    this.isFemale = memberRequest.getIsFemale();
+    this.isColdSensitive = memberRequest.getIsColdSensitive();
+  }
+
 }

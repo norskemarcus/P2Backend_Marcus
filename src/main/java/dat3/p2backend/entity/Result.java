@@ -1,5 +1,6 @@
 package dat3.p2backend.entity;
 
+import dat3.p2backend.dto.MemberRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,5 +29,14 @@ public class Result {
     this.maxCost = maxCost;
     this.innerMaterial = innerMaterial;
     this.isInStore = isInStore;
+  }
+
+  public Result(MemberRequest memberRequest, Member member) {
+    this.environmentTemperatureMin = memberRequest.getEnvironmentTemperatureMin();
+    this.minCost = memberRequest.getMinCost();
+    this.maxCost = memberRequest.getMaxCost();
+    this.innerMaterial = memberRequest.getInnerMaterial();
+    this.isInStore = memberRequest.getIsInStore();
+    this.member = member;
   }
 }
