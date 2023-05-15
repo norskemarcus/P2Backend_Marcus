@@ -18,7 +18,7 @@ public class MemberService {
 
 MemberRepository memberRepository;
 ResultRepository resultRepository;
-private PasswordEncoder passwordEncoder;
+PasswordEncoder passwordEncoder;
 
   public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, ResultRepository resultRepository) {
     this.memberRepository = memberRepository;
