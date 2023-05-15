@@ -18,9 +18,9 @@ public class MemberRequest {
   private String email;
   private String password;
   Double personHeight;
-  Double environmentTemperatureMin;
   Boolean isFemale;
   Boolean isColdSensitive;
+  Double environmentTemperatureMin;
   Double minCost;
   Double maxCost;
   String innerMaterial;
