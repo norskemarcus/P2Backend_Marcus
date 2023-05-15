@@ -22,8 +22,9 @@ public class MemberController {
 
   @PostMapping
   public MemberResponse addUserWithRoles(@RequestBody MemberRequest request) {
-    return memberService.addUserWithRoles (request, Role.USER);
+    return memberService.addUserWithRoles(request, Role.USER);
   }
+
 
 
 }
