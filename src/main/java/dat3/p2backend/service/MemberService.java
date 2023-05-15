@@ -53,4 +53,9 @@ PasswordEncoder passwordEncoder;
         new ResponseStatusException(HttpStatus.NOT_FOUND, "Brugeren kunne ikke findes."));
    return new MemberResponse(member, member.getResult());
   }
+
+  public void deleteMemberById(String id) {
+    memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+    memberRepository.deleteById(id);
+  }
 }

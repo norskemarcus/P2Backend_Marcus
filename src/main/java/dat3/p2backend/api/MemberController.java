@@ -27,6 +27,11 @@ public class MemberController {
     return memberService.addUserWithRoles(request, Role.USER);
   }
 
+  @DeleteMapping()
+  public void deleteMemberById(Principal p) {
+    memberService.deleteMemberById(p.getName());
+  }
+
 
   @GetMapping
   public MemberResponse getMember(Principal p){

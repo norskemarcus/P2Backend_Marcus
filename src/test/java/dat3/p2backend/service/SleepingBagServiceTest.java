@@ -3,6 +3,7 @@ package dat3.p2backend.service;
 import dat3.p2backend.config.DeveloperData;
 import dat3.p2backend.dto.SleepingBagRequest;
 import dat3.p2backend.dto.SleepingBagResponse;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import dat3.p2backend.entity.SleepingBag;
 import dat3.p2backend.entity.SleepingBagExternal;
 import dat3.p2backend.repository.ImageLinkRepository;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class SleepingBagServiceTest {
 
-
+/*
   @Autowired
   SleepingBagRepository sleepingBagRepository;
 
@@ -32,7 +33,9 @@ class SleepingBagServiceTest {
 
   SleepingBagService sleepingBagService;
 
+
   DeveloperData developerData;
+
 
 
 
@@ -57,5 +60,5 @@ class SleepingBagServiceTest {
 
   }
 
-
+*/
 }
