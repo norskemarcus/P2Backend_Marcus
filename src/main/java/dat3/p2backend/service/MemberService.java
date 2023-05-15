@@ -6,6 +6,7 @@ import dat3.p2backend.entity.Member;
 import dat3.p2backend.repository.MemberRepository;
 import dat3.security.entity.Role;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ private PasswordEncoder passwordEncoder;
     return new MemberResponse(member);
   }
 
-  public void deleteMemberById(String id) {
+  public void deleteById(String id) {
     memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     memberRepository.deleteById(id);
   }
