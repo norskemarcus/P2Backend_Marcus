@@ -31,12 +31,11 @@ public class Result {
     this.isInStore = isInStore;
   }
 
-  public Result(MemberRequest memberRequest, Member member) {
+  public Result(MemberRequest memberRequest) {
     this.environmentTemperatureMin = memberRequest.getEnvironmentTemperatureMin();
     this.minCost = memberRequest.getMinCost();
     this.maxCost = memberRequest.getMaxCost();
     this.innerMaterial = memberRequest.getInnerMaterial();
     this.isInStore = memberRequest.getIsInStore();
-    this.member = member;
   }
 }

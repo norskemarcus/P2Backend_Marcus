@@ -21,7 +21,7 @@ public class Member extends UserWithRoles {
   Double personHeight;
   Boolean isFemale;
   Boolean isColdSensitive;
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   Result result;
 
 

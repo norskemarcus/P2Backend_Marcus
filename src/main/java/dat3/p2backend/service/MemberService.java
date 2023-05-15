@@ -33,13 +33,13 @@ private PasswordEncoder passwordEncoder;
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Venligst udfyld email og password");
     }
 
-        if(memberRepository.existsById(request.getEmail())){
+    if(memberRepository.existsById(request.getEmail())){
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email er allerede registrered");
     }
     String pw = passwordEncoder.encode(request.getPassword());
 
     Member member = new Member(request, pw);
-    Result result = new Result(request, member);
+    Result result = new Result(request);
     member.setResult(result);
     member.addRole(user);
     resultRepository.save(result);
