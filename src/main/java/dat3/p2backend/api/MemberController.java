@@ -25,6 +25,6 @@ public class MemberController {
     return memberService.addUserWithRoles(request, Role.USER);
   }
 
-  
+
 
 }
