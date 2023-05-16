@@ -26,8 +26,8 @@ public class MemberController {
   }
 
   @DeleteMapping()
-  public void deleteMemberById(Principal p) {
-    memberService.deleteById(p.getName());
+  public MemberResponse deleteMemberById(Principal p) {
+    return memberService.deleteById(p.getName());
   }
 
 

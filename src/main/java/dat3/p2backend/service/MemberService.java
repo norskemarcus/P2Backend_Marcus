@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 
 @Service
 public class MemberService {
@@ -42,8 +44,11 @@ private PasswordEncoder passwordEncoder;
     return new MemberResponse(member);
   }
 
-  public void deleteById(String id) {
-    memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+  public MemberResponse deleteById(String id) {
+    Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     memberRepository.deleteById(id);
+    MemberResponse memberResponse = new MemberResponse(member);
+    System.out.println(memberResponse.getEmail());
+    return memberResponse;
   }
 }
