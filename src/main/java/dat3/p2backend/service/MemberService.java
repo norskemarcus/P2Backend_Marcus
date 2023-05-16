@@ -48,7 +48,6 @@ private PasswordEncoder passwordEncoder;
     Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     memberRepository.deleteById(id);
     MemberResponse memberResponse = new MemberResponse(member);
-    System.out.println(memberResponse.getEmail());
     return memberResponse;
   }
 }
