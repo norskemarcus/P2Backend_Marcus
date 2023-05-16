@@ -47,7 +47,6 @@ private PasswordEncoder passwordEncoder;
   public MemberResponse deleteById(String id) {
     Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     memberRepository.deleteById(id);
-    MemberResponse memberResponse = new MemberResponse(member);
-    return memberResponse;
+    return new MemberResponse(member);
   }
 }

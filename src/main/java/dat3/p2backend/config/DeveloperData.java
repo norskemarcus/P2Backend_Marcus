@@ -46,7 +46,7 @@ public class DeveloperData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        //setupUserWithRoleUsers();
+        setupUserWithRoleUsers();
         readImagesFromFile();
         importData();
     }
