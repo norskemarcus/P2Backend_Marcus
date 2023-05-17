@@ -76,9 +76,13 @@ public class SleepingBagService {
 
   private boolean filterByTemperature(SleepingBag sleepingBag, SleepingBagRequest sleepingBagRequest) {
     if (sleepingBagRequest.getIsColdSensitive() == null || sleepingBagRequest.getIsColdSensitive()) {
-      return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+      return sleepingBagRequest.getEnvironmentTemperatureMin() == null
+          || sleepingBag.getComfortTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin()
+          && (sleepingBag.getComfortTemp()-sleepingBagRequest.getEnvironmentTemperatureMin())*-1 <= 5;
     } else {
-      return sleepingBagRequest.getEnvironmentTemperatureMin() == null || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin();
+      return sleepingBagRequest.getEnvironmentTemperatureMin() == null
+          || sleepingBag.getLowerLimitTemp() <= sleepingBagRequest.getEnvironmentTemperatureMin()
+          && (sleepingBag.getLowerLimitTemp() - sleepingBagRequest.getEnvironmentTemperatureMin()) * -1 <= 5;
     }
   }
 
@@ -94,8 +98,8 @@ public class SleepingBagService {
   private boolean filterByPersonHeight(SleepingBag sleepingBag, SleepingBagRequest sleepingBagRequest) {
 
       if (sleepingBagRequest.getPersonHeight() != null) {
-        return (sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight()) &&
-            (sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight() <= 15);
+        return (sleepingBag.getPersonHeight() >= sleepingBagRequest.getPersonHeight())
+            && (sleepingBag.getPersonHeight() - sleepingBagRequest.getPersonHeight() <= 19);
       }
     return true;
   }
