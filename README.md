@@ -1,5 +1,5 @@
-# P2Backend
+Dette er et eksamensprojekt på 3. semester datamatiker, hvor fagene systemudvikling, programmering og teknik indgår.
 
-Gruppekontrakt: https://docs.google.com/document/d/1vfwk_qI2DuHgDVfcE0tCnginzKZPDXYsQrL8qV9uZFo/edit#heading=h.4tw5wvx49kqc
+Det har været en ægte kunde i forbindelse med dette projekt, som dette program er lavet i samarbejde med.
 
-Alle felter i gruppedokumentet er udfyldt
+Projektet er forket fra det eksisterende projekt som en del af et teknikkrav om at deploye det hele selv.
