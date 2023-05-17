@@ -31,17 +31,21 @@ class SleepingBagServiceTest {
   @Autowired
   ImageLinkRepository imageLinkRepository;
 
+  @Autowired
   SleepingBagService sleepingBagService;
 
 
+  @Autowired
   DeveloperData developerData;
+
+  PasswordEncoder passwordEncoder;
 
 
 
 
   @Test
   void getSleepingBags() {
-    developerData = new DeveloperData(sleepingBagRepository, sleepingBagExternalRepository, imageLinkRepository);
+    developerData = new DeveloperData(sleepingBagRepository, sleepingBagExternalRepository, imageLinkRepository, passwordEncoder);
     developerData.importData();
 
     SleepingBagRequest sleepingBagRequest = new SleepingBagRequest();
@@ -59,6 +63,6 @@ class SleepingBagServiceTest {
     assertNotEquals(0, sleepingBagResponses.size());
 
   }
-
 */
+
 }

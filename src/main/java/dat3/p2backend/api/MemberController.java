@@ -5,8 +5,6 @@ import dat3.p2backend.dto.MemberRequest;
 import dat3.p2backend.dto.MemberResponse;
 import dat3.p2backend.service.MemberService;
 import dat3.security.entity.Role;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -28,8 +26,8 @@ public class MemberController {
   }
 
   @DeleteMapping()
-  public void deleteMemberById(Principal p) {
-    memberService.deleteMemberById(p.getName());
+  public MemberResponse deleteMemberById(Principal p) {
+    return memberService.deleteById(p.getName());
   }
 
 

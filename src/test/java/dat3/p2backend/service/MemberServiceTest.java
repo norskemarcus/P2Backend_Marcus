@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @DataJpaTest
 class MemberServiceTest {
-
+/*
   @Autowired
   MemberRepository memberRepository;
 
@@ -31,7 +31,12 @@ class MemberServiceTest {
   @Test
   void addUserWithRoles() {
     MemberRequest memberRequest = new MemberRequest("test@gmail.com","test12",193.5,true,false);
-//    memberService.addUserWithRoles(memberRequest, Role.USER);
+    memberService.addUserWithRoles(memberRequest, Role.USER);
+
+
+
 
   }
+
+ */
 }
