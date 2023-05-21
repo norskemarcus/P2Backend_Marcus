@@ -1,4 +1,3 @@
-/*
 package dat3.security.config;
 
 import org.springframework.context.annotation.Bean;
@@ -33,4 +32,3 @@ public class CorsConfig {
         return source;
     }
 }
-*/
