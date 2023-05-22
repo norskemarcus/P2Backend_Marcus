@@ -9,6 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/sleeping-bags")
 @CrossOrigin(origins = "https://lemon-beach-0aa157e03.3.azurestaticapps.net/")
+
 public class SleepingBagController {
 
     SleepingBagService sleepingBagService;

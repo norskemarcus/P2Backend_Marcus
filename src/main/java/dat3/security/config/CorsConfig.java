@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.util.Arrays;
 
 @Configuration
-@EnableWebMvc
+//@EnableWebMvc
 public class CorsConfig {
 
     //When you know the domain name for your client, add it below before deployment

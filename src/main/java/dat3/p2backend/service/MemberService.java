@@ -8,13 +8,9 @@ import dat3.p2backend.repository.MemberRepository;
 import dat3.p2backend.repository.ResultRepository;
 import dat3.security.entity.Role;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Optional;
 
 
 @Service
