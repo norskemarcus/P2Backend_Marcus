@@ -18,8 +18,7 @@ public class CorsConfig {
         "*",
         "http://127.0.0.1:5503",
         "https://lemon-beach-0aa157e03.3.azurestaticapps.net",
-        "https://sovepose.holje.dk",
-        "https://test.holje.dk"
+        "https://sovepose.holje.dk"
     };
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
